@@ -1,0 +1,561 @@
+/* =========================================================
+   3Debate — single-file stylesheet
+   Edit the variables in :root to re-skin the whole site.
+   ========================================================= */
+
+:root {
+  /* Palette --------------------------------------------------- */
+  --bg:        #0b1224;   /* deep blueprint navy */
+  --bg-2:      #111a35;   /* slightly lifted surfaces */
+  --paper:     #f4ead5;   /* warm paper highlight */
+  --ink:       #e8efff;   /* main text */
+  --muted:     #8aa0c8;   /* secondary text */
+  --line:      rgba(150, 180, 230, 0.18);
+  --grid:      rgba(150, 180, 230, 0.06);
+  --accent-a:  #F1A46A;   /* sunset peach */
+  --accent-b:  #F16A73;   /* sunset magenta */
+  --accent-c:  #F16AB6;   /* blueprint cyan */
+  --gradient-deg: 135deg;
+
+  /* Type ------------------------------------------------------ */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+
+  /* Layout ---------------------------------------------------- */
+  --container: 1120px;
+  --pad-x:     clamp(1.25rem, 4vw, 2.5rem);
+  --radius:    14px;
+  --radius-sm: 10px;
+}
+
+/* ---------------------------------------------------------------
+   Base
+--------------------------------------------------------------- */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--bg);
+  /* Layered blueprint grid:
+     - large isometric-ish hatch
+     - faint dot grid for paper texture */
+  background-image:
+    linear-gradient(115deg, var(--grid) 1px, transparent 1px),
+    linear-gradient( 65deg, var(--grid) 1px, transparent 1px),
+    radial-gradient(circle at 1px 1px, rgba(150,180,230,0.05) 1px, transparent 0);
+  background-size: 64px 64px, 64px 64px, 24px 24px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+a {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color .15s ease;
+}
+a:hover { color: var(--accent-a); }
+
+h1, h2, h3 {
+  margin: 0 0 .5em;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+p { margin: 0 0 1em; }
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: rgba(255,255,255,0.06);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--paper);
+  color: var(--bg);
+  padding: .6rem 1rem;
+  border-radius: 0 0 8px 0;
+  font-weight: 600;
+  z-index: 100;
+}
+.skip-link:focus { left: 0; }
+
+/* Style the video: 100% width and height to cover the entire window */
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  object-fit: cover;
+  opacity: 0.5;
+}
+
+/* Add some content at the bottom of the video/page */
+.content {
+  position: fixed;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Style the button used to pause/play the video */
+#videoBtn {
+  width: 200px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+#videoBtn:hover {
+  background: #ddd;
+  color: black;
+}
+
+/* ---------------------------------------------------------------
+   Layout helpers
+--------------------------------------------------------------- */
+.nav,
+main > section,
+.site-footer {
+  width: 100%;
+  max-width: var(--container);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+main > section {
+  padding-top: clamp(3rem, 7vw, 5rem);
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+}
+
+.section-head {
+  max-width: 720px;
+  margin-bottom: 2.25rem;
+}
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent-a);
+  letter-spacing: 0.04em;
+  margin: 0 0 .75rem;
+}
+.section-head h2 {
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+}
+.section-sub {
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------
+   Nav
+--------------------------------------------------------------- */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  gap: 1.5rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.logo-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(var(--gradient-deg), var(--accent-a), var(--accent-b));
+  color: #0b1224;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 18px -8px rgba(255, 77, 141, 0.6);
+}
+.logo-text { 
+  font-size: 1.05rem; 
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+}
+.nav-links a { color: var(--muted); }
+.nav-links a:hover { color: var(--ink); }
+
+/* ---------------------------------------------------------------
+   Hero
+--------------------------------------------------------------- */
+.hero {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+  padding-top: clamp(2rem, 5vw, 4rem) !important;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  margin: 0 0 1.25rem;
+}
+.eyebrow .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(var(--gradient-deg), var(--accent-a), var(--accent-b));
+  box-shadow: 0 0 12px var(--accent-b);
+  animation: blink 2.2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  margin-bottom: 1.25rem;
+}
+.hero h1 .brand {
+  display: block;
+  background: linear-gradient(var(--gradient-deg), var(--accent-a), var(--accent-b) 70%, var(--accent-c));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero h1 .tagline {
+  display: block;
+  font-size: 0.42em;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  margin-top: 0.4em;
+  font-family: var(--font-mono);
+}
+
+.lede {
+  color: var(--muted);
+  max-width: 46ch;
+  font-size: 1.05rem;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.btn {
+  --slash: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* extra horizontal padding so the text clears the slanted edges */
+  padding: 0.75rem calc(1.25rem + var(--slash) * 0.6);
+  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(
+    var(--slash) 0,
+    100% 0,
+    calc(100% - var(--slash)) 100%,
+    0 100%
+  );
+  transition: transform .15s ease, filter .2s ease, background .2s ease, color .2s ease;
+}
+.btn-primary {
+  background: linear-gradient(var(--gradient-deg), var(--accent-a), var(--accent-b));
+  color: #0b1224;
+  /* clip-path hides box-shadow, so use drop-shadow which follows the clipped shape */
+  filter: drop-shadow(0 12px 18px rgba(255, 77, 141, 0.35));
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  color: #0b1224;
+  filter: drop-shadow(0 18px 22px rgba(255, 77, 141, 0.45));
+}
+.btn-ghost {
+  background: rgba(232, 239, 255, 0.06);
+  color: var(--ink);
+}
+.btn-ghost:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 154, 118, 0.14);
+  color: var(--accent-a);
+}
+
+.hero-stats {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2rem;
+  border-top: 1px dashed var(--line);
+  padding-top: 1.25rem;
+}
+.hero-stats li {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.hero-stats strong {
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* ---- Hero scene container (holds the showreel embed) ------ */
+.hero-scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(255,154,118,0.08), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15));
+  overflow: hidden;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ---------------------------------------------------------------
+   Capabilities
+--------------------------------------------------------------- */
+.cap-grid {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+.cap-card {
+  background: linear-gradient(180deg, var(--bg-2), rgba(17,26,53,0.4));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.25rem 1.4rem;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .25s ease;
+}
+.cap-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,154,118,0.4);
+  box-shadow: 0 20px 40px -28px rgba(255, 77, 141, 0.5);
+}
+.cap-label {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent-a);
+  margin: 0 0 .4rem;
+}
+.cap-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: .35em;
+}
+.cap-card p { color: var(--muted); margin: 0; }
+
+/* ---------------------------------------------------------------
+   Selected work
+--------------------------------------------------------------- */
+.work-grid {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+.work-card {
+  background: linear-gradient(180deg, var(--bg-2), rgba(17,26,53,0.4));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1rem 1.25rem;
+  transition: transform .2s ease, border-color .2s ease;
+}
+.work-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124,155,240,0.45);
+}
+.work-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(180deg, rgba(124,155,240,0.12), rgba(255,77,141,0.10));
+  border: 1px solid var(--line);
+  overflow: hidden;
+  margin-bottom: 0.9rem;
+}
+.work-tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-c);
+  margin: 0 0 .25rem;
+}
+.work-card h3 { font-size: 1.05rem; margin-bottom: .15em; }
+.work-card > p:last-child { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+/* CSS-only isometric mini-thumbnails — a different "block" per card */
+.iso-mini {
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* isometric grid lines */
+    linear-gradient(115deg, rgba(150,180,230,0.18) 1px, transparent 1px),
+    linear-gradient( 65deg, rgba(150,180,230,0.18) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.iso-mini::before,
+.iso-mini::after {
+  content: "";
+  position: absolute;
+  border: 1px solid var(--paper);
+  background: linear-gradient(var(--gradient-deg), rgba(255,154,118,0.35), rgba(255,77,141,0.25));
+  /* a tilted parallelogram to suggest an isometric block top */
+  transform: rotate(-30deg) skewX(30deg);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px -10px rgba(0,0,0,0.6);
+}
+.iso-mini-a::before { width: 45%; height: 30%; left: 28%; top: 30%; }
+.iso-mini-a::after  { width: 30%; height: 22%; left: 16%; top: 46%; opacity: .8; }
+
+.iso-mini-b::before { width: 38%; height: 26%; left: 20%; top: 26%; }
+.iso-mini-b::after  { width: 42%; height: 32%; left: 40%; top: 38%; opacity: .85; }
+
+.iso-mini-c::before { width: 50%; height: 32%; left: 24%; top: 38%; }
+.iso-mini-c::after  { width: 26%; height: 20%; left: 50%; top: 22%; opacity: .75; }
+
+.iso-mini-d::before { width: 34%; height: 24%; left: 18%; top: 42%; }
+.iso-mini-d::after  { width: 38%; height: 28%; left: 44%; top: 28%; opacity: .9; }
+
+/* ---------------------------------------------------------------
+   About
+--------------------------------------------------------------- */
+.about-body {
+  max-width: 60ch;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+.about-body p { margin-bottom: 1em; }
+
+/* ---------------------------------------------------------------
+   Contact
+--------------------------------------------------------------- */
+.contact-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 2rem;
+}
+.socials {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+}
+.socials a { color: var(--muted); }
+.socials a:hover { color: var(--accent-a); }
+
+/* ---------------------------------------------------------------
+   Footer
+--------------------------------------------------------------- */
+.site-footer {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-top: 1px solid var(--line);
+  margin-top: 3rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.site-footer p { margin: 0; }
+
+/* ---------------------------------------------------------------
+   Reveal-on-scroll (driven by script.js)
+--------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------
+   Responsive: desktop layouts kick in at 760px
+--------------------------------------------------------------- */
+@media (min-width: 760px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+  .cap-grid  { grid-template-columns: repeat(2, 1fr); }
+  .work-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1080px) {
+  .cap-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ---------------------------------------------------------------
+   Respect user motion preferences
+--------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal          { opacity: 1; transform: none; }
+}
