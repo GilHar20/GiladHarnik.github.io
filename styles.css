@@ -1,16 +1,10 @@
-/* =========================================================
-   3Debate — single-file stylesheet
-   Edit the variables in :root to re-skin the whole site.
-   ========================================================= */
-
 :root {
   /* Palette --------------------------------------------------- */
   --bg:        #0b1224;   /* deep blueprint navy */
   --bg-2:      #111a35;   /* slightly lifted surfaces */
-  --paper:     #f4ead5;   /* warm paper highlight */
   --ink:       #e8efff;   /* main text */
   --muted:     #8aa0c8;   /* secondary text */
-  --line:      rgba(150, 180, 230, 0.18);
+  --line:      rgba(230, 150, 150, 0.18);
   --grid:      rgba(150, 180, 230, 0.06);
   --accent-a:  #F1A46A;   /* sunset peach */
   --accent-b:  #F16A73;   /* sunset magenta */
@@ -53,8 +47,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-img, svg { display: block; max-width: 100%; }
-
 a {
   color: var(--ink);
   text-decoration: none;
@@ -70,28 +62,6 @@ h1, h2, h3 {
 
 p { margin: 0 0 1em; }
 
-code {
-  font-family: var(--font-mono);
-  font-size: 0.92em;
-  background: rgba(255,255,255,0.06);
-  padding: 0.1em 0.35em;
-  border-radius: 4px;
-}
-
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  background: var(--paper);
-  color: var(--bg);
-  padding: .6rem 1rem;
-  border-radius: 0 0 8px 0;
-  font-weight: 600;
-  z-index: 100;
-}
-.skip-link:focus { left: 0; }
-
-/* Style the video: 100% width and height to cover the entire window */
 #myVideo {
   position: fixed;
   right: 0;
@@ -101,32 +71,6 @@ code {
   z-index: -1;
   object-fit: cover;
   opacity: 0.5;
-}
-
-/* Add some content at the bottom of the video/page */
-.content {
-  position: fixed;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  color: #f1f1f1;
-  width: 100%;
-  padding: 20px;
-}
-
-/* Style the button used to pause/play the video */
-#videoBtn {
-  width: 200px;
-  font-size: 18px;
-  padding: 10px;
-  border: none;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
-}
-
-#videoBtn:hover {
-  background: #ddd;
-  color: black;
 }
 
 /* ---------------------------------------------------------------
@@ -144,8 +88,8 @@ main > section,
 }
 
 main > section {
-  padding-top: clamp(3rem, 7vw, 5rem);
-  padding-bottom: clamp(3rem, 7vw, 5rem);
+  padding-top: clamp(2rem, 5vw, 3rem);
+  padding-bottom: clamp(2rem, 5vw, 3rem);
 }
 
 .section-head {
@@ -162,10 +106,6 @@ main > section {
 .section-head h2 {
   font-size: clamp(1.6rem, 3.2vw, 2.4rem);
 }
-.section-sub {
-  color: var(--muted);
-  margin: 0;
-}
 
 /* ---------------------------------------------------------------
    Nav
@@ -177,6 +117,7 @@ main > section {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
   gap: 1.5rem;
+  border-bottom: 1px dashed var(--line);
 }
 
 .logo {
@@ -198,8 +139,8 @@ main > section {
   font-size: 0.95rem;
   box-shadow: 0 6px 18px -8px rgba(255, 77, 141, 0.6);
 }
-.logo-text { 
-  font-size: 1.05rem; 
+.logo-text {
+  font-size: 1.05rem;
 }
 
 .nav-links {
@@ -220,6 +161,7 @@ main > section {
 .hero {
   display: grid;
   gap: clamp(2rem, 5vw, 3.5rem);
+  
   align-items: center;
   padding-top: clamp(2rem, 5vw, 4rem) !important;
 }
@@ -270,17 +212,14 @@ main > section {
   font-family: var(--font-mono);
 }
 
-.lede {
-  color: var(--muted);
-  max-width: 46ch;
-  font-size: 1.05rem;
-}
-
 .cta-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   margin: 1.5rem 0 2rem;
+  padding-top: clamp(1.5rem, 2vw, 2rem);
+  padding-bottom: clamp(1.5rem, 2vw, 2rem);
+  border-bottom: 1px dashed var(--line);
 }
 
 .btn {
@@ -324,33 +263,9 @@ main > section {
   color: var(--accent-a);
 }
 
-.hero-stats {
-  list-style: none;
-  margin: 0; padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem 2rem;
-  border-top: 1px dashed var(--line);
-  padding-top: 1.25rem;
-}
-.hero-stats li {
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-.hero-stats strong {
-  color: var(--ink);
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-/* ---- Hero scene container (holds the showreel embed) ------ */
 .hero-scene {
   position: relative;
-  width: 100%;
+  scale: 90%;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -368,7 +283,7 @@ main > section {
 }
 
 /* ---------------------------------------------------------------
-   Capabilities
+   Capabilities (in about section)
 --------------------------------------------------------------- */
 .cap-grid {
   list-style: none;
@@ -441,39 +356,6 @@ main > section {
 .work-card h3 { font-size: 1.05rem; margin-bottom: .15em; }
 .work-card > p:last-child { margin: 0; color: var(--muted); font-size: 0.95rem; }
 
-/* CSS-only isometric mini-thumbnails — a different "block" per card */
-.iso-mini {
-  position: absolute;
-  inset: 0;
-  background-image:
-    /* isometric grid lines */
-    linear-gradient(115deg, rgba(150,180,230,0.18) 1px, transparent 1px),
-    linear-gradient( 65deg, rgba(150,180,230,0.18) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-.iso-mini::before,
-.iso-mini::after {
-  content: "";
-  position: absolute;
-  border: 1px solid var(--paper);
-  background: linear-gradient(var(--gradient-deg), rgba(255,154,118,0.35), rgba(255,77,141,0.25));
-  /* a tilted parallelogram to suggest an isometric block top */
-  transform: rotate(-30deg) skewX(30deg);
-  border-radius: 4px;
-  box-shadow: 0 8px 24px -10px rgba(0,0,0,0.6);
-}
-.iso-mini-a::before { width: 45%; height: 30%; left: 28%; top: 30%; }
-.iso-mini-a::after  { width: 30%; height: 22%; left: 16%; top: 46%; opacity: .8; }
-
-.iso-mini-b::before { width: 38%; height: 26%; left: 20%; top: 26%; }
-.iso-mini-b::after  { width: 42%; height: 32%; left: 40%; top: 38%; opacity: .85; }
-
-.iso-mini-c::before { width: 50%; height: 32%; left: 24%; top: 38%; }
-.iso-mini-c::after  { width: 26%; height: 20%; left: 50%; top: 22%; opacity: .75; }
-
-.iso-mini-d::before { width: 34%; height: 24%; left: 18%; top: 42%; }
-.iso-mini-d::after  { width: 38%; height: 28%; left: 44%; top: 28%; opacity: .9; }
-
 /* ---------------------------------------------------------------
    About
 --------------------------------------------------------------- */
@@ -491,14 +373,14 @@ main > section {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.25rem 2rem;
+  gap: 0.5rem;
 }
 .socials {
   list-style: none;
-  margin: 0; padding: 0;
+  margin: 1rem; padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
+  gap: 2rem;
   font-family: var(--font-mono);
   font-size: 0.92rem;
 }
@@ -537,7 +419,7 @@ main > section {
 --------------------------------------------------------------- */
 @media (min-width: 760px) {
   .hero {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   }
   .cap-grid  { grid-template-columns: repeat(2, 1fr); }
   .work-grid { grid-template-columns: repeat(2, 1fr); }
