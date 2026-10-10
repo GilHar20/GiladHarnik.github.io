@@ -6,7 +6,7 @@
   --muted:     #8aa0c8;   /* secondary text */
   --line:      rgba(230, 150, 150, 0.18);
   --grid:      rgba(150, 180, 230, 0.06);
-  --accent-a:  #F1A46A;   /* sunset peach */
+  --accent-a:  #f1a46a;   /* sunset peach */
   --accent-b:  #F16A73;   /* sunset magenta */
   --accent-c:  #F16AB6;   /* blueprint cyan */
   --gradient-deg: 135deg;
@@ -102,6 +102,9 @@ main > section {
   color: var(--accent-a);
   letter-spacing: 0.04em;
   margin: 0 0 .75rem;
+  padding-top: clamp(1.5rem, 2vw, 2rem);
+  border-top: 1px dashed var(--line);
+
 }
 .section-head h2 {
   font-size: clamp(1.6rem, 3.2vw, 2.4rem);
@@ -161,8 +164,7 @@ main > section {
 .hero {
   display: grid;
   gap: clamp(2rem, 5vw, 3.5rem);
-  
-  align-items: center;
+  align-items: start;
   padding-top: clamp(2rem, 5vw, 4rem) !important;
 }
 
@@ -218,8 +220,7 @@ main > section {
   gap: 0.75rem;
   margin: 1.5rem 0 2rem;
   padding-top: clamp(1.5rem, 2vw, 2rem);
-  padding-bottom: clamp(1.5rem, 2vw, 2rem);
-  border-bottom: 1px dashed var(--line);
+
 }
 
 .btn {
@@ -384,8 +385,24 @@ main > section {
   font-family: var(--font-mono);
   font-size: 0.92rem;
 }
-.socials a { color: var(--muted); }
+.socials a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  line-height: 0;
+}
+.socials img {
+  width: 36px;
+  height: 36px;
+  display: block;
+  object-fit: contain;
+  transition: transform .15s ease, filter .15s ease;
+}
 .socials a:hover { color: var(--accent-a); }
+.socials a:hover img {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
 
 /* ---------------------------------------------------------------
    Footer
